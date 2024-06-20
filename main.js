@@ -57,6 +57,7 @@ const posts = [
 ];
 const container = document.querySelector(".posts-list");
 
+
 posts.forEach((element) => {
     container.innerHTML += 
     `
@@ -91,6 +92,7 @@ posts.forEach((element) => {
             </div>            
         </div>
     `
+    
 })
 
 
@@ -100,6 +102,11 @@ for (let index = 0; index < posts.length; index++) {
     errorImage[index].addEventListener('error', function() {
         errorImage[index].className = "profile-pic-default";
         
-})
-    
+})   
 }
+
+
+const likesColor = document.querySelectorAll("like-button__label");
+    likesColor.addEventListener('click', function() {
+        console.log("mi hai cliccato");
+    })
