@@ -38,7 +38,7 @@ const posts = [
         "media": "https://unsplash.it/600/400?image=24",
         "author": {
             "name": "Luca Formicola",
-            "image": null
+            "image": ""
         },
         "likes": 56,
         "created": "2021-04-03"
@@ -55,3 +55,51 @@ const posts = [
         "created": "2021-03-05"
     }
 ];
+const container = document.querySelector(".posts-list");
+
+posts.forEach((element) => {
+    container.innerHTML += 
+    `
+    <div class="post">
+            <div class="post__header">
+                <div class="post-meta">                    
+                    <div class="post-meta__icon">
+                        <img class="profile-pic" src="${element.author.image}" alt="${element.author.name.split(" ").map((n)=>n[0]).join(".")}">                    
+                    </div>
+                    <div class="post-meta__data">
+                        <div class="post-meta__author">${element.author.name}</div>
+                        <div class="post-meta__time">4 mesi fa</div>
+                    </div>                    
+                </div>
+            </div>
+            <div class="post__text">${element.content}</div>
+            <div class="post__image">
+                <img src="${element.media}" alt="">
+            </div>
+            <div class="post__footer">
+                <div class="likes js-likes">
+                    <div class="likes__cta">
+                        <a class="like-button  js-like-button" href="#" data-postid="${element.id}">
+                            <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                            <span class="like-button__label">Mi Piace</span>
+                        </a>
+                    </div>
+                    <div class="likes__counter">
+                        Piace a <b id="like-counter-${element.id}" class="js-likes-counter">${element.likes}</b> persone
+                    </div>
+                </div> 
+            </div>            
+        </div>
+    `
+})
+
+
+for (let index = 0; index < posts.length; index++) {
+    const errorImage = document.querySelectorAll(".profile-pic")
+
+    errorImage[index].addEventListener('error', function() {
+        errorImage[index].className = "profile-pic-default";
+        
+})
+    
+}
