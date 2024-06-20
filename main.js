@@ -19,7 +19,7 @@ const posts = [
             "image": "https://unsplash.it/300/300?image=10"
         },
         "likes": 120,
-        "created": "2021-09-03"
+        "created": "2021-06-03"
     },
     {
         "id": 3,
@@ -38,7 +38,7 @@ const posts = [
         "media": "https://unsplash.it/600/400?image=24",
         "author": {
             "name": "Luca Formicola",
-            "image": ""
+            "image": null
         },
         "likes": 56,
         "created": "2021-04-03"
@@ -65,11 +65,11 @@ posts.forEach((element) => {
             <div class="post__header">
                 <div class="post-meta">                    
                     <div class="post-meta__icon">
-                        <img class="profile-pic" src="${element.author.image}" alt="${element.author.name.split(" ").map((n)=>n[0]).join(".")}">                    
+                        ${element.author.image ? `<img class="profile-pic" src="${element.author.image}" alt="">` : `<div class="profile-pic-default">${element.author.name.split(" ").map((n)=>n[0]).join(".")}</div>` }                    
                     </div>
                     <div class="post-meta__data">
                         <div class="post-meta__author">${element.author.name}</div>
-                        <div class="post-meta__time">4 mesi fa</div>
+                        <div class="post-meta__time">${calcDate(element.created)}</div>
                     </div>                    
                 </div>
             </div>
@@ -96,17 +96,57 @@ posts.forEach((element) => {
 })
 
 
-for (let index = 0; index < posts.length; index++) {
-    const errorImage = document.querySelectorAll(".profile-pic")
 
-    errorImage[index].addEventListener('error', function() {
-        errorImage[index].className = "profile-pic-default";
-        
-})   
+
+
+
+
+const likesColor = document.querySelectorAll(".js-like-button")
+const counter = document.querySelectorAll(".js-likes-counter")
+
+likesColor.forEach((likesColor, index) => {
+    likesColor.addEventListener("click", (event) => {
+        event.preventDefault();
+        const likeCounter = counter[index]
+        console.log(likeCounter);
+        if (likesColor.classList.contains("like-color")) {
+            posts[index].likes--
+        }
+        else {
+            posts[index].likes++
+        }
+        likesColor.classList.toggle("like-color")
+        likeCounter.innerHTML = posts[index].likes;
+    })
+})
+
+
+
+
+function calcDate(startingDate) {
+    const date1 = new Date(`${startingDate}`);
+    const date2 = new Date();
+
+    const timeDifferenceInMilliseconds = date2.getTime() - date1.getTime();
+    const monthDifference = timeDifferenceInMilliseconds / (1000 * 60 * 60 * 24 * 30)
+
+    
+
+    /* return Math.round(monthDifference) + " mesi fa" */
+
+    if (Math.round(monthDifference) < 12) {
+        return Math.round(monthDifference) + " mesi fa"
+    }
+    else if (Math.round(monthDifference) === 12) {
+        return "1 anno fa"
+    }
+    else {
+        const yearDifference = monthDifference / 12
+        const minusMonth = monthDifference - (Math.round(yearDifference) * 12)
+        return Math.round(yearDifference) + " anno e " + Math.round(minusMonth) + " mesi fa";
+    }
 }
 
 
-const likesColor = document.querySelectorAll("like-button__label");
-    likesColor.addEventListener('click', function() {
-        console.log("mi hai cliccato");
-    })
+
+
